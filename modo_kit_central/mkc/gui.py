@@ -10,7 +10,7 @@ except ImportError:
 
 # Kit imports
 from .prefs import Text, KEYS, DATA, Paths
-from .widgets import KitsTab, Banner
+from .widgets import Banner, KitsTab, InfoTab
 
 
 class KitCentralWindow(QMainWindow):
@@ -25,6 +25,7 @@ class KitCentralWindow(QMainWindow):
         self._build_tabs()
         # Display the UI
         self.show()
+        # Trigger kit population thread.
 
     def _build_window(self) -> None:
         """Sets up the main window properties."""
@@ -52,17 +53,25 @@ class KitCentralWindow(QMainWindow):
         """Builds the tabs for Modo Kit Central."""
         # Generate Tabs
         self.tabs = QTabWidget()
+        self.tab_bar = self.tabs.tabBar()
         self.tabs.setTabsClosable(True)
         self.tabs.tabCloseRequested.connect(self.tab_close)
         self.tabs.setObjectName("Tabs")
         self.base_layout.addWidget(self.tabs)
+
         # Add the core tab
         self.tab_kits = KitsTab()
         self.tabs.addTab(self.tab_kits, KEYS.KITS)
-        # Remove the close button from these core tab
-        self.tabs.tabBar().setTabButton(0, QTabBar.RightSide, None)
-        # Remove close button on macOS
-        self.tabs.tabBar().setTabButton(0, QTabBar.LeftSide, None)
+
+        # Add the help tab
+        self.tab_help = InfoTab()
+        # Add the help tab but to the right side in self.tabs
+        self.tabs.addTab(self.tab_help, KEYS.INFO)
+
+        # Clear all close buttons from the initial tabs.
+        for tab_index in range(self.tabs.count()):
+            self.tab_bar.setTabButton(tab_index, QTabBar.RightSide, None)
+            self.tab_bar.setTabButton(tab_index, QTabBar.LeftSide, None)
 
     def closeEvent(self, event: QCloseEvent) -> None:
         """PySide method: Handle closing the UI
@@ -79,9 +88,10 @@ class KitCentralWindow(QMainWindow):
         Args:
             index: The index of the tab to close.
         """
-        if index == 0:
-            # Core tab, don't close.
+        if index in (0, 1):
+            # Core tabs, don't close.
             return
+
         # Ge the widget attached to the tab
         tab_widget = self.tabs.widget(index)
         if tab_widget is not None:

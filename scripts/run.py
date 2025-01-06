@@ -16,17 +16,24 @@ def link_kit() -> None:
 def run() -> None:
     """Runs the mkc library."""
     from mkc.gui import KitCentralWindow
-    from mkc.prefs import DATA
+    from mkc.prefs import DATA, KitInfo
 
     mkc_app = QApplication(sys.argv)
     mkc_app.setAttribute(Qt.AA_EnableHighDpiScaling)
 
+    # Load mock kit data
+    DATA.modo_kits = {
+        'modo_kit_central': KitInfo(
+            name="modo_kit_central", version="0.1.0", enabled=True, path=Path()
+        ),
+    }
     DATA.mkc_window = KitCentralWindow()
 
     sys.exit(mkc_app.exec())
 
 
-if __name__ == '__main__':
+def main():
+    """Main entry point of the runner script."""
     # Add mck to the sys path
     link_kit()
     # Enable local mode

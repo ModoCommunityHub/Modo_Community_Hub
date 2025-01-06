@@ -1,16 +1,17 @@
 # Local setup:
 ___
+This repository uses poetry to handle the dependencies.
+The following steps will help you set up the project locally.
 1. Clone the repository.
 2. Create a virtual environment.
    - `python -m venv .venv`
-3. Activate the virtual environment.
-   - MAC: `source .venv/bin/activate`
-   - Windows: `.venv\Scripts\activate`
-4. Remove the .venv-mkc folder.
+3. Use poetry to install the dependencies.
+   - `poetry install`
+4. Activate the virtual environment.
+   - `poetry shell`
+5. Command to remove the .venv folder.
    - MAC: `rm -rf .venv`
    - Windows: `rmdir /s .venv`
-5. Install the `pyproject.toml` requirements.
-   - `pip install .`
 
 
 # Python setup using pyenv:

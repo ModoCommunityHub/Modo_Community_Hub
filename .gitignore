@@ -5,8 +5,11 @@
 # Build
 *.pyc
 build/
-*venv*/
+.venv/
 *.egg*
+modo_kit_central/libs_*/
+mkc_kits.db
+test_release.json
 
 # Mac crap
 .DS_Store

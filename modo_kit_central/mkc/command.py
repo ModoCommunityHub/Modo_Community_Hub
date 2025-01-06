@@ -22,7 +22,7 @@ class MKCCommand(BasicCommand):
         """
         self.dyna_Add(name, arg_type)
         current_id = self.arg_id
-        flags = list()
+        flags = []
         if optional:
             flags.append(lx.symbol.fCMDARG_OPTIONAL)
         if query:

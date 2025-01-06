@@ -1,3 +1,4 @@
+from typing import Dict
 from pathlib import Path
 from shutil import rmtree
 from zipfile import ZipFile, ZIP_DEFLATED
@@ -5,7 +6,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from .utils import Paths, make_index, get_pyproject, get_version, readable_size
 
 
-def package_kit(project_data: dict) -> Path:
+def package_kit(project_data: Dict) -> Path:
     """Packages the kit into an LPK file.
 
     Args:
@@ -15,7 +16,7 @@ def package_kit(project_data: dict) -> Path:
         lpk_path: The path to the LPK file.
     """
     # Get the name of the Kit:
-    kit_name = project_data['project']['name']
+    kit_name = project_data['tool']['poetry']['name']
     # Get the kit directory from the project data
     kit_dir = Paths.REPO_ROOT / kit_name
     # Get the build directory
@@ -43,7 +44,7 @@ def package_kit(project_data: dict) -> Path:
     # Build the LPK file.
     with ZipFile(lpk_path, mode='w', compression=ZIP_DEFLATED) as lpk:
         # Add the license
-        lpk.write(license_file, "license")
+        lpk.write(license_file, "LICENSE")
         # Generate the index.xml file data
         index_data = make_index(folder=kit_dir, files=kit_files, message=user_message)
         # Write the index.xml file
@@ -62,7 +63,8 @@ def package_kit(project_data: dict) -> Path:
     return lpk_path
 
 
-if __name__ == '__main__':
+def main():
+    """Main entry point of the builder script."""
     # Get the project details
     project = get_pyproject()
 

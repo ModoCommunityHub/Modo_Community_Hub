@@ -13,28 +13,34 @@ jobs:
   release:
     # We are just using python so lets use linux
     runs-on: ubuntu-latest
+
     steps:
       # Get the repository code
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
       # Setup Python and install toml
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+
       # Install toml so we can parse the version file
       - name: Install toml
         run: pip install toml
+
       # Use toml to get the version of the kit and store it as an environment variable
       - name: Get Kit Version
         run: |
           echo "KIT_VERSION=$(python -c 'import toml; print(toml.load("pyproject.toml")["project"]["version"])')" >> $GITHUB_ENV
           echo "KIT_NAME=$(python -c 'import toml; print(toml.load("pyproject.toml")["project"]["name"])')" >> $GITHUB_ENV
+
       # Package the lpk file
       - name: Package Kit
         run: |
           python -m scripts.build
           ls -l ./build
+
       # Create a tag release on the repository
       - name: Create Release
         id: create_release
@@ -47,6 +53,7 @@ jobs:
           release_name: Modo Kit Central ${{ env.KIT_VERSION }}
           draft: false
           prerelease: false
+
       # Upload the .lpk file to the release tag.
       - name: Upload LPK Asset
         id: upload-release-asset

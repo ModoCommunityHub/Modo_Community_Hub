@@ -54,8 +54,32 @@ def load_avatar(avatar: str) -> Path:
     Returns:
         resource: Path to the avatar file or None if it doesn't exist.
     """
+    if isinstance(avatar, int):
+        avatar = False
     avatar = avatar if avatar else "profile.png"
     resource = Paths.RESOURCES / "avatars" / avatar
 
     if resource.exists():
         return resource
+
+
+def up_to_date(version_local: str, version_latest: str) -> bool:
+    """Compares two version strings.
+
+    Args:
+        version_local: The local version string.
+        version_latest: The latest version string.
+    """
+    try:
+        local_version = [int(v) for v in version_local.split(".")]
+        latest_version = [int(v) for v in version_latest.split(".")]
+    except ValueError:
+        # Version is corrupted, assume it's out-of-date, update required.
+        return False
+
+    if local_version < latest_version:
+        # Local version is out-of-date, update required.
+        return False
+    else:
+        # Local version is up-to-date.
+        return True

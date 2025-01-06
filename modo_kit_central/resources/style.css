@@ -1,21 +1,33 @@
 /* Override PySide styles here */
 
-/* Override the "social" widget */
-QListWidget#social {
-    background-color: #3e3e3e;
-    border: None;
-    border-radius: 1px;
-    padding: 1px;
-    show-decoration-selected: 0;
+
+/* Search Bar */
+QLineEdit#kit_search {
+    color: rgb(220, 220, 220);
+    border: 1px solid rgba(180, 100, 180, 0.5);
+    border-radius: 6px;
+    background: rgb(100, 50, 100);
+}
+QLineEdit#kit_search[placeholder=true] {
+    color: rgba(220, 220, 220, 0.5);
 }
 
-/* Handle selected item in QListWidget */
-QListWidget#social::item:selected {
-    background: #a84c4c;
-    border: None;
+/* Update Button */
+QPushButton[update=true] {
+    background: rgb(100, 50, 100);
+    color: white;
+}
+QPushButton:hover[update=true] {
+    background: rgb(180, 100, 180);
+}
+QPushButton:pressed[update=true] {
+    color: rgb(100, 50, 100);
 }
 
-/* Handle all items in QListWidget */
-QListWidget#social::item {
-    border: None;
+/* MKC About */
+QLabel#mkc-about {
+    color: rgb(220, 220, 220);
+    border: 1px solid rgb(100, 50, 100);
+    border-radius: 6px;
+    background: rgba(100, 50, 100, 0.5);
 }
